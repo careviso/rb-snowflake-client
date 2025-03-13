@@ -42,7 +42,7 @@ module RubySnowflake
 
       private
         def jwt_token_expired?
-          Time.now.to_i > @token_expires_at
+          Time.now.to_i >= (@token_expires_at - 2)
         end
 
         def public_key_fingerprint
