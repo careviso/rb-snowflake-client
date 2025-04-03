@@ -140,10 +140,11 @@ module RubySnowflake
       @_enable_polling_queries = false
     end
 
-    def query(query, warehouse: nil, streaming: false, database: nil, schema: nil, bindings: nil, role: nil)
+    def query(query, warehouse: nil, streaming: false, database: nil, schema: nil, bindings: nil, role: nil, parameters: nil)
       warehouse ||= @default_warehouse
       database ||= @default_database
       role ||= @default_role
+      parameters ||= {}
 
       query_start_time = Time.now.to_i
       response = nil
@@ -154,7 +155,8 @@ module RubySnowflake
           "database" =>  database&.upcase,
           "statement" => query,
           "bindings" => bindings,
-          "role" => role
+          "role" => role,
+          "parameters" => parameters
         }
 
         response = request_with_auth_and_headers(
